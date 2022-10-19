@@ -3,11 +3,33 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { createTheme } from '@mui/material';
+import { ThemeProvider } from '@mui/material';
+import store from './redux/store';
+import { Provider } from 'react-redux';
+
+export const theme = createTheme({
+  palette: {
+    type: 'dark',
+    primary: {
+      main: '#212121',
+    },
+    secondary: {
+      main: '#031373',
+    },
+  },
+});
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
+
 root.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+    <ThemeProvider theme={theme}>
+      <App />
+    </ThemeProvider>
+    </Provider>
   </React.StrictMode>
 );
 
