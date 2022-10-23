@@ -6,11 +6,14 @@ import Login from './components/Login';
 import { useEffect } from 'react';
 import { selectToken, setToken } from './redux/authSlice';
 import TmpComponent from './components/TmpComponent';
+import { Box, CssBaseline } from '@mui/material';
+import SongGrid from './components/SongGrid';
 
 function App() {
   const dispatch = useDispatch();
+  
+  // get spotify login token
   const token = useSelector(selectToken);
-
   useEffect(() => {
     const hash = window.location.hash;
     let token = window.localStorage.getItem("token");
@@ -26,25 +29,24 @@ function App() {
   
   return (
       <div className="App">
-        <header className="App-header">
-          <Login/>
+        <CssBaseline/>
+        <Box
+          sx={{
+            height: '100vh',
+            display: 'flex',
+            flexGrow: 1,
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
+
           { token ? (
-            <TmpComponent/>
+            // <TmpComponent />
+            <SongGrid token={token}/>
           ) : null}
-          <p>{token}</p>
-          <img src={logo} className="App-logo" alt="logo" />
-          {/* <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p> */}
-          <Counter/>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-          </a>
-        </header>
+          <Login token={token}/>
+
+        </Box>
       </div>
   );
 }
