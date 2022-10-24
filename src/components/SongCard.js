@@ -4,24 +4,16 @@ import ButtonBase from '@mui/material/ButtonBase'
 import Paper from '@mui/material/Paper'
 import Typography from '@mui/material/Typography'
 import React from 'react'
-import SpotifyPlayer from 'react-spotify-web-playback'
 
-function SongCard({ token, ID, index, openSong, selectSongFn }) {
+function SongCard({ index, openSong, selectSongFn }) {
   if (index == openSong) {
     return (
       <Paper 
-        sx= {{ border: 1, display: 'flex', height: '100%', flexGrow: 1, borderColor: 'primary.main', justifyContent: 'center'}}
+        sx= {{ padding: 1, border: 1, display: 'flex', height: '100%', flexGrow: 1, borderColor: 'primary.main', justifyContent: 'center'}}
         >
-            <Box maxWidth='sm'>
-              <SpotifyPlayer
-                token={token}
-                uris={['spotify:artist:6HQYnRM4OzToCYPpVBInuU']}
-                styles={{
-                  maxWidth: 3
-                }}
-              />
-            </Box>
-        <Button onClick={() => {console.log(token)}}/>
+        {/* <Box maxWidth='sm' sx={{display: 'flex',alignItems: 'center'}}> */}
+          {/* {mediaPlayer} */}
+        {/* </Box> */}
       </Paper>
     )
 
@@ -29,27 +21,11 @@ function SongCard({ token, ID, index, openSong, selectSongFn }) {
   return (
     <ButtonBase sx={{width: '100%', height: '100%', display: 'flex', flexGrow: 1}} onClick={selectSongFn}>
     <Paper 
-      sx= {{ border: 1, display: 'flex', height: '100%', flexGrow: 1, borderColor: 'primary.main', justifyContent: 'center'}}
+      sx= {{ border: 1, display: 'flex', height: '100%', flexGrow: 1, borderColor: 'primary.main', alignItems: 'center', justifyContent: 'center'}}
       >
-      
-      { index == openSong ?
-        (
-          <Box maxWidth='sm'>
-            <SpotifyPlayer
-              token={token}
-              uris={['spotify:artist:6HQYnRM4OzToCYPpVBInuU']}
-              styles={{
-                maxWidth: 3
-              }}
-            />
-          </Box>
-        ) : (
-          <Typography>
-            Play Song
-          </Typography>
-        )
-      }
-      <Button onClick={() => {console.log(token)}}/>
+      <Typography>
+        Play Song
+      </Typography>
     </Paper>
     </ButtonBase>
   )

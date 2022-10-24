@@ -21,9 +21,15 @@ export const spotifyApi = createApi({
         return `recommendations?${queryParams.toString()}`
       },
     }),
+    putCloseSession: builder.mutation({
+      query: () => ({
+        url: `me/player/pause`,
+        method: 'PUT'
+      }),
+    }),
   }),
 })
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetSongReccomendationsQuery } = spotifyApi
+export const { useGetSongReccomendationsQuery, usePutCloseSessionQuery } = spotifyApi

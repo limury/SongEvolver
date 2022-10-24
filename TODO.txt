@@ -1,0 +1,4 @@
+1. Make each card get the details of the song it corresponds to and display them
+2. Toggle play and pause button on each card
+3. Add button to select the song to evolve
+4. Get reccomended songs when one is selected

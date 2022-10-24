@@ -4,6 +4,7 @@ import { pokemonApi } from '../services/pokemon'
 import { spotifyApi } from '../services/spotify'
 import counterReducer from './counter/counterSlice'
 import authReducer from './authSlice'
+import spotifyReducer from './spotifySlice'
 
 const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ const store = configureStore({
     [pokemonApi.reducerPath]: pokemonApi.reducer,
     [spotifyApi.reducerPath]: spotifyApi.reducer,
     auth: authReducer,
+    spotify: spotifyReducer,
   },
   middleware: (getDefaultMiddleware) => 
     getDefaultMiddleware()
