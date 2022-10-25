@@ -1,6 +1,23 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import axios from 'axios'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
+import genres from '../available_genres.json';
 
+// get song audio features from spotify api
+// TODO ADD THE AUDIO FEATURES AS SEED AND SEND REQUEST
+const getNewSongsFromSeed = createAsyncThunk(
+  'spotify/getNewSongsFromSeed',
+  async (index, thunkApi) => {
+    var reccomendationSeed = thunkApi.getState().spotify.currentSongsDetails[index].seedValues;
+    const seedGenres = ['','','','','']
+    for (let i = 0; i < 5; i++){
+      seedGenres[i] = genres.genres[ Math.floor(Math.random() * genres.genres.length) ]
+    }
+    reccomendationSeed.seed_genres = seedGenres;
+  }
+);
+
+// get song details from spotify api
 const getSongs = createAsyncThunk(
   'spotify/fetchSongs',
   async (uris, thunkApi) => {
@@ -11,19 +28,37 @@ const getSongs = createAsyncThunk(
         )
       )
       .then(axios.spread((...responses) => { // extract useful data
-        console.log(responses)
+        console.log(JSON.stringify(responses))
         return responses.map((val) => ({
-          albumName: val.data.album?.name,
+          albumName:  val.data.album?.name,
           albumImage: val.data.album?.images[0],
-          artists: val.data.artists?.map((v) => v.name).join(', '),
-          name: val.data.name,
+          artists:    val.data.artists?.map((v) => v.name).join(', '),
+          name:       val.data.name,
+          seedValues: {
+            seed_artists: val.data.artists?.map((v)=>v.id).join(','),
+            seed_tracks: val.data.id,
+          },
+        }))
+      }));
+      thunkApi.dispatch(setSongDetails(out));
+      // now get audio features
+      const audioFeatures = await axios.all(
+        uris.map((uri) => 
+          axios.get(`https://api.spotify.com/v1/audio-features/${uri.split(':')[2]}`)
+        )
+      ).then(axios.spread((...responses) => {
+        console.log(responses);
+        return responses.map((val) => ({
+          danceability:     val.data.danceability,
+          acousticness:     val.data.acousticness,
+          energy:           val.data.energy,
+          valence:          val.data.valence,
+          instrumentalness: val.data.instrumentalness,
         }))
       }))
-      .catch(errors => {
-        console.error(errors);
-      });
-      thunkApi.dispatch(setSongDetails(out));
+      thunkApi.dispatch(setSongFeatures(audioFeatures));
       thunkApi.fulfillWithValue(out);
+      thunkApi.dispatch(getNewSongsFromSeed(1))
     } catch (err) {
       console.error(err)
       thunkApi.rejectWithValue(err)
@@ -89,12 +124,20 @@ export const spotifySlice = createSlice({
     },
     setSongDetails: (state, action) => {
       state.currentSongsDetails = action.payload;
+    },
+    setSongFeatures: (state, action) => {
+      if (state.currentSongsDetails.length === action.payload.length){
+        for (let i = 0; i < action.payload.length; i++){
+          state.currentSongsDetails[i].features = action.payload[i];
+        }
+      }
     }
   },
 });
 
-const selectDeviceId = state => state.spotify.deviceId
-const selectSongsDetails = state => state.spotify.currentSongsDetails
+const selectDeviceId = state => state.spotify.deviceId;
+const selectSongsDetails = state => state.spotify.currentSongsDetails;
+const selectSongSeeds = index => state => state.spotify.currentSongsDetails[index].seedValues;
 
 export { 
   stopPlayback, 
@@ -102,8 +145,9 @@ export {
   transferPlayback, 
   selectDeviceId, 
   selectSongsDetails,
+  selectSongSeeds,
   getSongs 
 }
-export const { setDeviceId, setSongDetails } = spotifySlice.actions
+export const { setDeviceId, setSongDetails, setSongFeatures } = spotifySlice.actions
 
 export default spotifySlice.reducer

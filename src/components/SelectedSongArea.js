@@ -13,7 +13,7 @@ function SelectedSongArea({name, artist}) {
       <Typography variant='body2'>
         By: {artist}
       </Typography>
-      <Button>
+      <Button sx={{marginTop: 2}} variant='contained'>
         Evolve!
       </Button>
     </Box>
