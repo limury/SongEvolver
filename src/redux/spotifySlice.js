@@ -1,19 +1,23 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { useSelector } from 'react-redux';
 import genres from '../available_genres.json';
 
 // get song audio features from spotify api
 // TODO ADD THE AUDIO FEATURES AS SEED AND SEND REQUEST
 const getNewSongsFromSeed = createAsyncThunk(
   'spotify/getNewSongsFromSeed',
-  async (index, thunkApi) => {
-    var reccomendationSeed = thunkApi.getState().spotify.currentSongsDetails[index].seedValues;
-    const seedGenres = ['','','','','']
+  async ({index, featureSeeds}, thunkApi) => {
+    var reccomendationSeed = {
+    };
+    const seedGenres = ['','','','',''];
     for (let i = 0; i < 5; i++){
-      seedGenres[i] = genres.genres[ Math.floor(Math.random() * genres.genres.length) ]
+      seedGenres[i] = genres.genres[ Math.floor(Math.random() * genres.genres.length) ];
     }
-    reccomendationSeed.seed_genres = seedGenres;
+    var reccomendationSeed = {
+      ...thunkApi.getState().spotify.currentSongsDetails[index].seedValues,
+      seed_genres: seedGenres.join(','),
+    }
+    console.log(reccomendationSeed)
   }
 );
 
@@ -58,7 +62,7 @@ const getSongs = createAsyncThunk(
       }))
       thunkApi.dispatch(setSongFeatures(audioFeatures));
       thunkApi.fulfillWithValue(out);
-      thunkApi.dispatch(getNewSongsFromSeed(1))
+      thunkApi.dispatch(getNewSongsFromSeed({index: 1, featureSeeds: {}}))
     } catch (err) {
       console.error(err)
       thunkApi.rejectWithValue(err)
