@@ -1,12 +1,10 @@
-import { Button, Grid, Paper } from '@mui/material'
+import { Grid, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { selectToken } from '../redux/authSlice';
 import SongCard from './SongCard'
-import SpotifyPlayer from 'react-spotify-web-playback'
-import { usePutCloseSessionQuery } from '../services/spotify';
-import axios from 'axios';
-import { stopPlayback, fetchPlaySong } from '../redux/spotifySlice';
+import { fetchPlaySong, getSongs, selectSongsDetails } from '../redux/spotifySlice';
+import { Box } from '@mui/system';
+import SelectedSongArea from './SelectedSongArea';
 
 function SongGrid({ token }) {
   const dispatch = useDispatch();
@@ -15,30 +13,42 @@ function SongGrid({ token }) {
   const [ openSong, setOpenSong ] = useState(-1);
   useEffect( () => {
     console.log(openSong)
-    if (openSong != -1) { // if there is no selected song, don't play one
-      dispatch(fetchPlaySong());
+    if (openSong !== -1) { // if there is no selected song, don't play one
+      dispatch(fetchPlaySong('spotify:track:18asYwWugKjjsihZ0YvRxO'));
     }
+    console.log(dispatch(getSongs(['spotify:track:18asYwWugKjjsihZ0YvRxO','spotify:track:18asYwWugKjjsihZ0YvRxO','spotify:track:18asYwWugKjjsihZ0YvRxO','spotify:track:18asYwWugKjjsihZ0YvRxO'])))
   }, [openSong])
   // ---------------------------------------------------------------------------
 
-  const trackIDs = ['a','b','c','d']
+  const tracks = useSelector(selectSongsDetails);
 
   return (
-    <Grid container spacing={2} maxWidth='lg'>
-      {
-        trackIDs.map(
-          (ID, index) => (
-            <Grid item xs={6} sx={{height: 100}} key={index}>
-              <SongCard 
-                index={index} 
-                openSong={openSong} 
-                selectSongFn={() => {setOpenSong(index)}}
-              />
-            </Grid>
+    <>
+      {/* Grid with songs to pick from */}
+      <Grid container spacing={2} maxWidth='lg'>
+        { tracks ? (
+          tracks.map(
+            (details, index) => (
+              <Grid item xs={6} sx={{height: 100}} key={index}>
+                <SongCard 
+                  details={details}
+                  index={index}
+                  isPlaying={index===openSong}
+                  selectSongFn={() => {setOpenSong(index)}}
+                />
+              </Grid>
+            )
           )
-        )
-      }
-    </Grid>
+        ) : null
+        }
+      </Grid>
+      {/* Box with currently selected song */}
+      { (openSong !== -1 ) ? (
+        <SelectedSongArea 
+          name={tracks[openSong].name} 
+          artist={tracks[openSong].artists}/>
+      ) : null }
+    </>
   )
 }
 
