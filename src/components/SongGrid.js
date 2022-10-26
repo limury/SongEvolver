@@ -13,7 +13,6 @@ function SongGrid({ token }) {
   // Index of what song from the grid is currently selected --------------------
   const [ openSong, setOpenSong ] = useState(-1);
   useEffect( () => {
-    console.log(openSong)
     if (openSong !== -1) { // if there is no selected song, don't play one
       dispatch(fetchPlaySong(tracks[openSong].uri));
     }

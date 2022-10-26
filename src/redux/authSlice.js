@@ -50,7 +50,6 @@ export const getSpotifyAuthToken = (dispatch) =>
     ).split("=")[1])*1000 + new Date().getTime();
     window.location.hash = ""
     window.localStorage.setItem("token", JSON.stringify(token))
-    console.log('here')
   }
 
   if (token && token.value) { 

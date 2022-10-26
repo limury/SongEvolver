@@ -6,7 +6,6 @@ function randomGaussian() {
 
 
 export function evolveObject (obj, stdDev) {
-  console.log(obj)
   var out = {...obj}
   for (const [k,v] of Object.entries(obj)){
     out[k] = v + randomGaussian() * stdDev;

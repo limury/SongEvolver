@@ -14,7 +14,6 @@ const getSongFeatures = createAsyncThunk(
           axios.get(`https://api.spotify.com/v1/audio-features/${uri.split(':')[2]}`)
         )
       ).then(axios.spread((...responses) => {
-        console.log(responses);
         return responses.map((val) => ({
           danceability:     val.data.danceability,
           acousticness:     val.data.acousticness,
@@ -54,7 +53,6 @@ const getNewSongsFromSeed = createAsyncThunk(
       reccomendationSeed.seed_genres = seedGenres.join(',')
       const searchParams = new URLSearchParams(reccomendationSeed);
       const reccomendations = await axios.get(`https://api.spotify.com/v1/recommendations?${searchParams.toString()}`)
-      console.log(reccomendations);
       const newSongGrid = reccomendations.data.tracks.map((val) => ({
         uri:        val.uri,
         albumName:  val.album?.name,
@@ -87,7 +85,6 @@ const getSongs = createAsyncThunk(
         )
       )
       .then(axios.spread((...responses) => { // extract useful data
-        console.log(responses)
         return responses.map((val) => ({
           uri:        val.data.uri,
           albumName:  val.data.album?.name,
@@ -144,7 +141,6 @@ const fetchPlaySong = createAsyncThunk(
 const transferPlayback = createAsyncThunk(
     'spotify/transferPlayback',
     async (deviceId, thunkApi) => {
-        console.log('changing adevice id')
         try {
             const response = await axios.put(
                 'https://api.spotify.com/v1/me/player',

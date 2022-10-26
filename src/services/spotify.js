@@ -6,8 +6,7 @@ export const spotifyApi = createApi({
   baseQuery: fetchBaseQuery({ 
     baseUrl: 'https://api.spotify.com/v1/',
     prepareHeaders: (headers, { getState }) => {
-      const token = getState().auth.token
-      console.log(token)
+      const token = getState().auth.token;
       if (token) {
         headers.set('Authorization', `Bearer ${token}`)
       }
