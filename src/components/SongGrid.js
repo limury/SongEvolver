@@ -17,7 +17,6 @@ function SongGrid({ token }) {
     if (openSong !== -1) { // if there is no selected song, don't play one
       dispatch(fetchPlaySong(tracks[openSong].uri));
     }
-    // console.log(dispatch(getSongs(['spotify:track:18asYwWugKjjsihZ0YvRxO','spotify:track:18asYwWugKjjsihZ0YvRxO','spotify:track:18asYwWugKjjsihZ0YvRxO','spotify:track:18asYwWugKjjsihZ0YvRxO'])))
   }, [openSong])
   // ---------------------------------------------------------------------------
 

@@ -7,7 +7,7 @@ import { getSpotifyAuthToken, selectToken } from './redux/authSlice';
 import { Box, Button, CssBaseline } from '@mui/material';
 import SongGrid from './components/SongGrid';
 import SpotifyPlayer from 'react-spotify-web-playback'
-import { selectDeviceId, setDeviceId, transferPlayback, getNewSongsFromSeed } from './redux/spotifySlice';
+import { selectDeviceId, setDeviceId, transferPlayback, getNewSongsFromSeed, getSongs } from './redux/spotifySlice';
 
 function App() {
   const dispatch = useDispatch();
@@ -24,6 +24,9 @@ function App() {
   // get spotify login token ---------------------------------------------------
   const token = useSelector(selectToken);
   useEffect(getSpotifyAuthToken(dispatch), [])
+  useEffect(() => {dispatch(
+    getSongs(['spotify:track:6xGruZOHLs39ZbVccQTuPZ','spotify:track:1Y62KpDaP5MEL43ZcI6IaG','spotify:track:1jDJFeK9x3OZboIAHsY9k2','spotify:track:6UelLqGlWMcVH1E5c4H7lY'])
+    )})
   // ---------------------------------------------------------------------------
   
   return (

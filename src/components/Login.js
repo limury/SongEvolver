@@ -5,7 +5,7 @@ import { logout } from '../redux/authSlice'
 
 function Login({ token }) {
   const CLIENT_ID="8df550fb3cbc4bc3b5c6a18d61b6a3c0"
-  const REDIRECT_URI="http://localhost:3000"
+  const REDIRECT_URI="https://spotifysongevolver.web.app"
   const AUTH_ENDPOINT="https://accounts.spotify.com/authorize"
   const RESPONSE_TYPE="token"
   const dispatch = useDispatch()
