@@ -3,24 +3,24 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import SongCard from './SongCard'
 import { fetchPlaySong, getSongs, selectSongsDetails } from '../redux/spotifySlice';
-import { Box } from '@mui/system';
 import SelectedSongArea from './SelectedSongArea';
+import SongFeaturesCard from './SongFeaturesCard';
 
 function SongGrid({ token }) {
   const dispatch = useDispatch();
+  const tracks = useSelector(selectSongsDetails);
 
   // Index of what song from the grid is currently selected --------------------
   const [ openSong, setOpenSong ] = useState(-1);
   useEffect( () => {
     console.log(openSong)
     if (openSong !== -1) { // if there is no selected song, don't play one
-      dispatch(fetchPlaySong('spotify:track:18asYwWugKjjsihZ0YvRxO'));
+      dispatch(fetchPlaySong(tracks[openSong].uri));
     }
-    console.log(dispatch(getSongs(['spotify:track:18asYwWugKjjsihZ0YvRxO','spotify:track:18asYwWugKjjsihZ0YvRxO','spotify:track:18asYwWugKjjsihZ0YvRxO','spotify:track:18asYwWugKjjsihZ0YvRxO'])))
+    // console.log(dispatch(getSongs(['spotify:track:18asYwWugKjjsihZ0YvRxO','spotify:track:18asYwWugKjjsihZ0YvRxO','spotify:track:18asYwWugKjjsihZ0YvRxO','spotify:track:18asYwWugKjjsihZ0YvRxO'])))
   }, [openSong])
   // ---------------------------------------------------------------------------
 
-  const tracks = useSelector(selectSongsDetails);
 
   return (
     <>
@@ -46,8 +46,12 @@ function SongGrid({ token }) {
       { (openSong !== -1 ) ? (
         <SelectedSongArea 
           name={tracks[openSong].name} 
-          artist={tracks[openSong].artists}/>
+          artist={tracks[openSong].artists}
+          index={openSong}
+          deselectSongFn={()=>setOpenSong(-1)}
+        />
       ) : null }
+      <SongFeaturesCard selectedSongIndex={openSong}/>
     </>
   )
 }

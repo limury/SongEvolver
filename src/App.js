@@ -4,10 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import Login from './components/Login';
 import { useEffect } from 'react';
 import { getSpotifyAuthToken, selectToken } from './redux/authSlice';
-import { Box, CssBaseline } from '@mui/material';
+import { Box, Button, CssBaseline } from '@mui/material';
 import SongGrid from './components/SongGrid';
 import SpotifyPlayer from 'react-spotify-web-playback'
-import { selectDeviceId, setDeviceId, transferPlayback } from './redux/spotifySlice';
+import { selectDeviceId, setDeviceId, transferPlayback, getNewSongsFromSeed } from './redux/spotifySlice';
 
 function App() {
   const dispatch = useDispatch();
@@ -59,6 +59,9 @@ function App() {
           </Box>
         ) : null
         }
+        <Button onClick={() => dispatch(getNewSongsFromSeed({index:1,featureSeeds:{}}))}>
+          Dispatch
+        </Button>
       </div>
   );
 }

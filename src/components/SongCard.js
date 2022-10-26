@@ -32,12 +32,14 @@ function SongCard({ details, index, isPlaying, selectSongFn }) {
       </Box>
       {/* artist and song name */}
       <Box sx={{
-        flexGrow: 1
+        flexGrow: 1,
+        paddingX: '20%',
+        maxWidth: '100%',
       }}>
-        <Typography variant='h5'>
+        <Typography noWrap variant='h5'>
           {details.name}
         </Typography>
-        <Typography variant='body1'>{details.artists}</Typography>
+        <Typography noWrap variant='body1'>{details.artists}</Typography>
       </Box>
       {/* album image */}
       <Box sx={{
