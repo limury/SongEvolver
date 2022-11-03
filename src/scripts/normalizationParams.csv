@@ -1,3 +1,0 @@
-,acousticness,danceability,duration_ms,energy,instrumentalness,key,liveness,loudness,mode,speechiness,tempo,time_signature,valence
-subtract,2.84e-06,0.122,16042.0,0.0148,0.0,0.0,0.0188,-33.097,0.0,0.0231,47.859,1.0,0.0348
-divide,0.99499716,0.862,988585.0,0.9832,0.976,11.0,0.9501999999999999,32.79,1.0,0.7928999999999999,171.47199999999998,4.0,0.9572

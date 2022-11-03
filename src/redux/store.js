@@ -16,8 +16,6 @@ const store = configureStore({
   },
   middleware: (getDefaultMiddleware) => 
     getDefaultMiddleware()
-      .concat(pokemonApi.middleware)
-      .concat(spotifyApi.middleware)
 })
 
 setupListeners(store.dispatch)
