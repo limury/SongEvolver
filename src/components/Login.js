@@ -5,25 +5,25 @@ import { logout } from '../redux/authSlice'
 
 function Login({ token }) {
   const CLIENT_ID="8df550fb3cbc4bc3b5c6a18d61b6a3c0"
-  const REDIRECT_URI="https://spotifysongevolver.web.app"
+  const REDIRECT_URI= process.env.NODE_ENV ? "https://spotifysongevolver.web.app" : "http://localhost:3000";
   const AUTH_ENDPOINT="https://accounts.spotify.com/authorize"
   const RESPONSE_TYPE="token"
   const dispatch = useDispatch()
 
   if (token) {
     return (
-        <Button 
-          variant="contained" 
-          sx = {{ 
-            position: 'absolute',
-            top: 0,
-            right: 0,
-            marginTop: 2,
-            marginRight: 2
-          }}
-          onClick={() => dispatch(logout())}>
-            Logout from Spotify
-        </Button>
+      <Button 
+        variant="contained" 
+        sx = {{ 
+          position: 'absolute',
+          top: 0,
+          right: 0,
+          marginTop: 2,
+          marginRight: 2
+        }}
+        onClick={() => dispatch(logout())}>
+          Logout from Spotify
+      </Button>
     )
   } else {
     return (
