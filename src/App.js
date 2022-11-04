@@ -62,9 +62,6 @@ function App() {
           </Box>
         ) : null
         }
-        <Button onClick={() => dispatch(getNewSongsFromSeed({index:1,featureSeeds:{}}))}>
-          Dispatch
-        </Button>
       </div>
   );
 }
